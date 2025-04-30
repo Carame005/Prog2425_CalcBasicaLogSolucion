@@ -1,9 +1,10 @@
 package es.prog2425.calclog
-
 import es.prog2425.calclog.service.ServicioCalc
 import es.prog2425.calclog.app.Controlador
+import es.prog2425.calclog.data.RepoLogH2
 import es.prog2425.calclog.data.RepoLogTxt
 import es.prog2425.calclog.service.ServicioLog
+import es.prog2425.calclog.service.ServicioLogH2
 import es.prog2425.calclog.ui.Consola
 import es.prog2425.calclog.utils.GestorFichTxt
 
@@ -17,6 +18,9 @@ fun main(args: Array<String>) {
 
     val repoLog = RepoLogTxt(GestorFichTxt())
     Controlador(Consola(), ServicioCalc(), ServicioLog(repoLog)).iniciar(args)
+    val repoLogH2 = RepoLogH2()
+    val servicioLog = ServicioLogH2(repoLogH2)
+    servicioLog.guardarLog("Aplicación iniciada correctamente")
 
     /*
     O también instanciando en variables locales... es lo mismo al fin y al cabo.

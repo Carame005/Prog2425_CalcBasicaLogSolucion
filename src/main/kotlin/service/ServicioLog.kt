@@ -1,6 +1,7 @@
 package es.prog2425.calclog.service
 
 import es.prog2425.calclog.data.IRepoLog
+import es.prog2425.calclog.data.IRepoLogH2
 import es.prog2425.calclog.model.Calculo
 
 /**
@@ -8,6 +9,7 @@ import es.prog2425.calclog.model.Calculo
  * Encapsula la lógica de negocio relacionada con la gestión de registros de log.
  */
 class ServicioLog(private val repositorio: IRepoLog) : IServicioLog {
+
 
     /**
      * Registra un mensaje de texto en el archivo de log.
