@@ -1,15 +1,10 @@
-package es.prog2425.calclog.service
+package es.prog2425.calclog.data
 
-import es.prog2425.calclog.model.Calculo
 import java.sql.PreparedStatement
+import java.sql.ResultSet
 import java.sql.Statement
 
-interface IServicioLog {
-    fun registrarEntradaLog(mensaje: String)
-    fun registrarEntradaLog(calculo: Calculo)
-    fun getInfoUltimoLog(): List<String>
-    fun crearNuevoLog()
-    fun crearRutaLog(ruta: String): Boolean
+interface IRepoBaseDatos {
     fun crearTablas(statement: Statement, lista : List<String>)
     fun actualizarTablas(statement: Statement, lista: List<String>)
     fun realizarConsulta(statement: Statement,query: String)

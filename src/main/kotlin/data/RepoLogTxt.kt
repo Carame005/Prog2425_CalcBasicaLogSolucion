@@ -30,6 +30,7 @@ class RepoLogTxt(private val fichero: IUtilFich) : IRepoLog {
         return nombre
     }
 
+
     /**
      * Obtiene el contenido del archivo de log más reciente.
      */

@@ -1,12 +1,12 @@
 package es.prog2425.calclog
 import es.prog2425.calclog.service.ServicioCalc
 import es.prog2425.calclog.app.Controlador
-import es.prog2425.calclog.data.RepoLogH2
+import es.prog2425.calclog.data.RepoBaseDatos
 import es.prog2425.calclog.data.RepoLogTxt
 import es.prog2425.calclog.service.ServicioLog
-import es.prog2425.calclog.service.ServicioLogH2
 import es.prog2425.calclog.ui.Consola
 import es.prog2425.calclog.utils.GestorFichTxt
+import es.prog2425.calclog.utils.UtilsBD
 
 /**
  * Punto de entrada de la aplicación.
@@ -15,12 +15,7 @@ import es.prog2425.calclog.utils.GestorFichTxt
  * y delega el control al controlador principal de la aplicación.
  */
 fun main(args: Array<String>) {
-
-    val repoLog = RepoLogTxt(GestorFichTxt())
-    Controlador(Consola(), ServicioCalc(), ServicioLog(repoLog)).iniciar(args)
-    val repoLogH2 = RepoLogH2()
-    val servicioLog = ServicioLogH2(repoLogH2)
-    servicioLog.guardarLog("Aplicación iniciada correctamente")
+    Controlador(Consola(), ServicioCalc(), ServicioLog(RepoLogTxt(GestorFichTxt()),RepoBaseDatos(UtilsBD())), UtilsBD()).iniciar(args)
 
     /*
     O también instanciando en variables locales... es lo mismo al fin y al cabo.

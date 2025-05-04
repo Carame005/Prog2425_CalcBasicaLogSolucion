@@ -1,14 +1,16 @@
 package es.prog2425.calclog.service
 
+import es.prog2425.calclog.data.IRepoBaseDatos
 import es.prog2425.calclog.data.IRepoLog
-import es.prog2425.calclog.data.IRepoLogH2
 import es.prog2425.calclog.model.Calculo
+import java.sql.PreparedStatement
+import java.sql.Statement
 
 /**
  * Servicio que actúa como intermediario entre la lógica de aplicación y el repositorio de logs.
  * Encapsula la lógica de negocio relacionada con la gestión de registros de log.
  */
-class ServicioLog(private val repositorio: IRepoLog) : IServicioLog {
+class ServicioLog(private val repositorio: IRepoLog, private val repoBD : IRepoBaseDatos) : IServicioLog {
 
 
     /**
@@ -45,5 +47,37 @@ class ServicioLog(private val repositorio: IRepoLog) : IServicioLog {
     override fun crearRutaLog(ruta: String): Boolean {
         repositorio.ruta = ruta
         return repositorio.crearRutaLog()
+    }
+
+    override fun crearTablas(statement: Statement, lista: List<String>) {
+        repoBD.crearTablas(statement,lista)
+    }
+
+    override fun actualizarTablas(statement: Statement, lista: List<String>) {
+        repoBD.actualizarTablas(statement,lista)
+    }
+
+    override fun realizarConsulta(statement: Statement, query: String) {
+        repoBD.realizarConsulta(statement,query)
+    }
+
+    override fun realizarVariasConsultas(
+        statement: Statement,
+        lista: List<String>,
+        pausa: Boolean
+    ) {
+        repoBD.realizarVariasConsultas(statement,lista,pausa)
+    }
+
+    override fun ejecutarConsultaPreparada(statement: PreparedStatement?){
+        return repoBD.ejecutarConsultaPreparada(statement)
+    }
+
+    override fun actualizarConsultaPreparada(statement: PreparedStatement?) {
+        repoBD.actualizarConsultaPreparada(statement)
+    }
+
+    override fun crearActualizarLogs(statement: Statement) {
+        repoBD.crearActualizarLogs(statement)
     }
 }
