@@ -1,8 +1,8 @@
 package es.prog2425.calclog.service
 
 import es.prog2425.calclog.model.Calculo
-import java.sql.PreparedStatement
-import java.sql.Statement
+import es.prog2425.calclog.model.Operacion
+import es.prog2425.calclog.model.Operador
 
 interface IServicioLog {
     fun registrarEntradaLog(mensaje: String)
@@ -10,11 +10,7 @@ interface IServicioLog {
     fun getInfoUltimoLog(): List<String>
     fun crearNuevoLog()
     fun crearRutaLog(ruta: String): Boolean
-    fun crearTablas(statement: Statement, lista : List<String>)
-    fun actualizarTablas(statement: Statement, lista: List<String>)
-    fun realizarConsulta(statement: Statement,query: String)
-    fun realizarVariasConsultas(statement: Statement, lista: List<String>, pausa : Boolean)
-    fun ejecutarConsultaPreparada(statement: PreparedStatement?)
-    fun actualizarConsultaPreparada(statement: PreparedStatement?)
-    fun crearActualizarLogs(statement: Statement)
+    fun obtenerTodos() : List<Operacion>
+    fun insertar(primerNumero : Double, operador: Operador, segundoNumero : Double, resultado : Double)
+    fun crearTabla()
 }

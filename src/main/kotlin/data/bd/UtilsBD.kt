@@ -1,6 +1,7 @@
-package es.prog2425.calclog.utils
+package es.prog2425.calclog.data.bd
 
 import com.zaxxer.hikari.HikariDataSource
+import org.h2.jdbcx.JdbcDataSource
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.PreparedStatement
@@ -8,12 +9,23 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
-class UtilsBD : IUtilsBD {
+object UtilsBD{
     // Definimos los parámetros de conexión
     val jdbcUrl = "jdbc:h2:file:./data/Calculadora"  // URL para la base de datos H2 en archivo
     val user = "sa"  // Nombre de usuario para la base de datos
     val password = ""  // Contraseña para la base de datos (vacía en este caso)
+    private const val DRIVER = "org.h2.Driver"
 
+    private val dataSource = JdbcDataSource()
+
+    init {
+        try {
+            Class.forName(DRIVER)
+            dataSource.setURL(jdbcUrl)
+            dataSource.user = user
+            dataSource.password = password
+        }catch (e: ClassNotFoundException){"NO se encontro la clase ${e.message}"}
+    }
     /**
      * Establece una conexión con la base de datos H2 almacenada en el archivo.
      *
@@ -21,10 +33,10 @@ class UtilsBD : IUtilsBD {
      * utilizando las credenciales proporcionadas. Si la conexión es exitosa, imprime un mensaje
      * de éxito en la consola. Si ocurre un error, se captura y se imprime un mensaje de error.
      *
-     * @throws SQLException Si hay un error en la conexión con la base de datos.
+     * @throws java.sql.SQLException Si hay un error en la conexión con la base de datos.
      * @throws Exception Si ocurre un error genérico durante el proceso de conexión.
      */
-    override fun obtenerConexion(): Connection? {
+     fun obtenerConexion(): Connection? {
         return try {
             val connection = DriverManager.getConnection(jdbcUrl, user, password)
             println("Conexión exitosa!")
@@ -47,7 +59,7 @@ class UtilsBD : IUtilsBD {
      * @throws SQLException Si hay un error al cerrar la conexion de la base de datos.
      * @throws Exception Si ocurre un error genérico durante el proceso de conexión.
      */
-    override fun cerrarConexion(conexion: Connection?) {
+     fun cerrarConexion(conexion: Connection?) {
         if (conexion == null) {
             println("La conexión es nula. No hay nada que cerrar.")
             return
@@ -74,7 +86,7 @@ class UtilsBD : IUtilsBD {
      *
      * @return java.sql.Statement Retorna un objeto del tipo statement
      */
-    override fun crearStatement(conexion: Connection?): Statement {
+     fun crearStatement(conexion: Connection?): Statement {
         requireNotNull(conexion) { "La conexión no puede ser nula al crear el Statement." }
         return conexion.createStatement()
     }
@@ -91,7 +103,7 @@ class UtilsBD : IUtilsBD {
      *
      * @return ResultSet Retorna un objeto del tipo ResultSet
      */
-    override fun ejecutarQuery(statement: java.sql.Statement, query: String): ResultSet? {
+     fun ejecutarQuery(statement: Statement, query: String): ResultSet? {
         return try {
             statement.executeQuery(query)
         } catch (e: SQLException) {
@@ -114,7 +126,7 @@ class UtilsBD : IUtilsBD {
      *
      * @return Int Retorna un entero que usualmente sirve para señalar cuantos cambios ham sido hechos
      */
-    override fun actualizarQuery(statement: java.sql.Statement, query: String): Int {
+     fun actualizarQuery(statement: Statement, query: String): Int {
         return try {
             statement.executeUpdate(query)
         } catch (e: SQLException) {
@@ -134,7 +146,7 @@ class UtilsBD : IUtilsBD {
      *
      * @return HikariDataSource? Retorna un objeto DataSource o nulo
      */
-    override fun crearDataSource() : HikariDataSource? {
+     fun crearDataSource() : HikariDataSource? {
         return try{
             val datasource = HikariDataSource()
             datasource.jdbcUrl = jdbcUrl
@@ -163,7 +175,7 @@ class UtilsBD : IUtilsBD {
      *
      * @return PreparedStatement? Retorna un objeto de tipo PreparedStatement o un nulo
      */
-    override fun prepararConsulta(conexion: Connection?, query: String): PreparedStatement? {
+     fun prepararConsulta(conexion: Connection?, query: String): PreparedStatement? {
         return try {
             conexion?.prepareStatement(query)
         } catch (e: SQLException) {
@@ -183,7 +195,7 @@ class UtilsBD : IUtilsBD {
      * @throws SQLException Si hay un error al obtener la conexión.
      * @throws Exception Si ocurre un error genérico durante el proceso de conexión.
      */
-    override fun obtenerConexionDataSource(datasource: HikariDataSource?): Connection? {
+     fun obtenerConexionDataSource(datasource: HikariDataSource?): Connection? {
         return try {
             val connection = datasource?.connection
             println("Conexión exitosa!")
@@ -204,7 +216,7 @@ class UtilsBD : IUtilsBD {
      *
      * @return ResultSet? Retorna un objeto del tipo ResultSet o nulo.
      */
-    override fun ejecutarQueryPreparada(statement: PreparedStatement?): ResultSet? {
+     fun ejecutarQueryPreparada(statement: PreparedStatement?): ResultSet? {
         return statement?.executeQuery()
     }
 
@@ -215,7 +227,7 @@ class UtilsBD : IUtilsBD {
      *
      * @return Int Retorna un entero que usualmente sirve para señalar cuantos cambios ham sido hechos
      */
-    override fun actualizarQueryPreparada(statement: PreparedStatement?): Int {
+     fun actualizarQueryPreparada(statement: PreparedStatement?): Int {
         if (statement == null) {
             return 0
         }
@@ -227,7 +239,7 @@ class UtilsBD : IUtilsBD {
      *
      * @param dataSource La dataSource cuyos datos se desea ver
      */
-    override fun historialConexiones(dataSource : HikariDataSource?) {
+     fun historialConexiones(dataSource : HikariDataSource?) {
         val poolMXBean = dataSource?.hikariPoolMXBean
         println("Conexiones activas: ${poolMXBean?.activeConnections}")
         println("Conexiones en espera: ${poolMXBean?.threadsAwaitingConnection}")

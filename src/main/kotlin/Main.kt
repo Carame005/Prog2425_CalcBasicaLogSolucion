@@ -1,12 +1,12 @@
 package es.prog2425.calclog
 import es.prog2425.calclog.service.ServicioCalc
 import es.prog2425.calclog.app.Controlador
-import es.prog2425.calclog.data.RepoBaseDatos
 import es.prog2425.calclog.data.RepoLogTxt
 import es.prog2425.calclog.service.ServicioLog
 import es.prog2425.calclog.ui.Consola
 import es.prog2425.calclog.utils.GestorFichTxt
-import es.prog2425.calclog.utils.UtilsBD
+import es.prog2425.calclog.data.bd.UtilsBD
+import es.prog2425.calclog.data.dao.OperacionDaoH2
 
 /**
  * Punto de entrada de la aplicación.
@@ -15,7 +15,8 @@ import es.prog2425.calclog.utils.UtilsBD
  * y delega el control al controlador principal de la aplicación.
  */
 fun main(args: Array<String>) {
-    Controlador(Consola(), ServicioCalc(), ServicioLog(RepoLogTxt(GestorFichTxt()),RepoBaseDatos(UtilsBD())), UtilsBD()).iniciar(args)
+    Controlador(Consola(), ServicioCalc(), ServicioLog(RepoLogTxt(GestorFichTxt()),OperacionDaoH2())).iniciar(args
+    )
 
     /*
     O también instanciando en variables locales... es lo mismo al fin y al cabo.

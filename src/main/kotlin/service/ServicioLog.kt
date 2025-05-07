@@ -1,8 +1,10 @@
 package es.prog2425.calclog.service
 
-import es.prog2425.calclog.data.IRepoBaseDatos
 import es.prog2425.calclog.data.IRepoLog
+import es.prog2425.calclog.data.dao.IOperacionDaoH2
 import es.prog2425.calclog.model.Calculo
+import es.prog2425.calclog.model.Operacion
+import es.prog2425.calclog.model.Operador
 import java.sql.PreparedStatement
 import java.sql.Statement
 
@@ -10,7 +12,7 @@ import java.sql.Statement
  * Servicio que actúa como intermediario entre la lógica de aplicación y el repositorio de logs.
  * Encapsula la lógica de negocio relacionada con la gestión de registros de log.
  */
-class ServicioLog(private val repositorio: IRepoLog, private val repoBD : IRepoBaseDatos) : IServicioLog {
+class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOperacionDaoH2) : IServicioLog {
 
 
     /**
@@ -48,36 +50,20 @@ class ServicioLog(private val repositorio: IRepoLog, private val repoBD : IRepoB
         repositorio.ruta = ruta
         return repositorio.crearRutaLog()
     }
-
-    override fun crearTablas(statement: Statement, lista: List<String>) {
-        repoBD.crearTablas(statement,lista)
+    override fun obtenerTodos(): List<Operacion> {
+        return baseDatos.obtenerTodos()
     }
 
-    override fun actualizarTablas(statement: Statement, lista: List<String>) {
-        repoBD.actualizarTablas(statement,lista)
-    }
-
-    override fun realizarConsulta(statement: Statement, query: String) {
-        repoBD.realizarConsulta(statement,query)
-    }
-
-    override fun realizarVariasConsultas(
-        statement: Statement,
-        lista: List<String>,
-        pausa: Boolean
+    override fun insertar(
+        primerNumero: Double,
+        operador: Operador,
+        segundoNumero: Double,
+        resultado: Double
     ) {
-        repoBD.realizarVariasConsultas(statement,lista,pausa)
+        baseDatos.insertar(primerNumero,operador,segundoNumero,resultado)
     }
 
-    override fun ejecutarConsultaPreparada(statement: PreparedStatement?){
-        return repoBD.ejecutarConsultaPreparada(statement)
-    }
-
-    override fun actualizarConsultaPreparada(statement: PreparedStatement?) {
-        repoBD.actualizarConsultaPreparada(statement)
-    }
-
-    override fun crearActualizarLogs(statement: Statement) {
-        repoBD.crearActualizarLogs(statement)
+    override fun crearTabla() {
+        baseDatos.crearTabla()
     }
 }

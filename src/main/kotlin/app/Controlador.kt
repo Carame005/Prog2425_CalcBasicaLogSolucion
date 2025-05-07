@@ -1,11 +1,9 @@
 package es.prog2425.calclog.app
 
-import es.prog2425.calclog.data.IRepoBaseDatos
 import es.prog2425.calclog.model.Operador
 import es.prog2425.calclog.service.ServicioCalc
 import es.prog2425.calclog.service.IServicioLog
 import es.prog2425.calclog.ui.IEntradaSalida
-import es.prog2425.calclog.utils.IUtilsBD
 
 /**
  * Controlador principal de la aplicación que gestiona el flujo de ejecución y coordina
@@ -15,7 +13,6 @@ class Controlador(
     private val ui: IEntradaSalida,
     private val calculadora: ServicioCalc,
     private val gestorLog: IServicioLog,
-    private val baseDatos: IUtilsBD
 ) {
 
     companion object {
@@ -28,15 +25,10 @@ class Controlador(
      */
     fun iniciar(args: Array<String>) {
         if (!procesarArgumentos(args)) return
-        val conexion = baseDatos.obtenerConexion()
-        val statement = baseDatos.crearStatement(conexion)
 
         mostrarInfo(gestorLog.getInfoUltimoLog())
 
         gestorLog.crearNuevoLog()
-        gestorLog.crearActualizarLogs(statement)
-
-        baseDatos.cerrarConexion(conexion)
 
         if (args.size == 4) ejecutarCalculoConArgumentos(args)
 
@@ -124,7 +116,10 @@ class Controlador(
      */
     private fun realizarCalculo(num1: Double, operador: Operador, num2: Double) {
         val calculo = calculadora.realizarCalculo(num1, operador, num2)
+        gestorLog.insertar(num1,operador,num2,calculo.resultado)
         ui.mostrar(calculo.toString())
         gestorLog.registrarEntradaLog(calculo)
     }
+
+
 }

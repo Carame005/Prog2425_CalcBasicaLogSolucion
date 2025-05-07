@@ -1,6 +1,8 @@
 package es.prog2425.calclog.data
 
 import es.prog2425.calclog.model.Calculo
+import es.prog2425.calclog.model.Operacion
+import es.prog2425.calclog.model.Operador
 
 interface IRepoLog {
     var ruta: String?
@@ -11,4 +13,5 @@ interface IRepoLog {
     fun getContenidoUltimoLog(): List<String>
     fun registrarEntrada(mensaje: String)
     fun registrarEntrada(calculo: Calculo)
+
 }

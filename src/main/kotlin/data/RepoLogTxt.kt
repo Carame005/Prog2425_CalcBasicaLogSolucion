@@ -1,6 +1,9 @@
 package es.prog2425.calclog.data
 
+import es.prog2425.calclog.data.dao.IOperacionDaoH2
 import es.prog2425.calclog.model.Calculo
+import es.prog2425.calclog.model.Operacion
+import es.prog2425.calclog.model.Operador
 import es.prog2425.calclog.utils.IUtilFich
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -58,4 +61,7 @@ class RepoLogTxt(private val fichero: IUtilFich) : IRepoLog {
     override fun registrarEntrada(calculo: Calculo) {
         registrarEntrada(calculo.toString())
     }
+
+
+
 }
