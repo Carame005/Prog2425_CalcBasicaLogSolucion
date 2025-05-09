@@ -11,7 +11,8 @@ interface IServicioLog {
     fun crearNuevoLog()
     fun crearRutaLog(ruta: String): Boolean
     fun insertar(primerNumero : Double, operador: Operador, segundoNumero : Double, resultado : Double)
-    fun crearTabla()
     fun obtenerOperaciones() : List<Operacion>
     fun realizarConsulta()
+    fun insertarError(mensaje: String)
+    fun consultarErrores()
 }

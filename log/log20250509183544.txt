@@ -1,0 +1,3 @@
+2025-05-09 18:35:49 El primer número no es válido!
+2025-05-09 18:36:04 El operador no es válido!
+2025-05-09 18:36:16 El segundo número no es válido!

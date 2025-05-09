@@ -1,6 +1,8 @@
 package es.prog2425.calclog.service
 
 import es.prog2425.calclog.data.IRepoLog
+import es.prog2425.calclog.data.dao.ErrorDao
+import es.prog2425.calclog.data.dao.IErrorDao
 import es.prog2425.calclog.data.dao.IOperacionDaoH2
 import es.prog2425.calclog.model.Calculo
 import es.prog2425.calclog.model.Operacion
@@ -12,7 +14,7 @@ import java.sql.Statement
  * Servicio que actúa como intermediario entre la lógica de aplicación y el repositorio de logs.
  * Encapsula la lógica de negocio relacionada con la gestión de registros de log.
  */
-class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOperacionDaoH2) : IServicioLog {
+class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOperacionDaoH2, private val errorDao: IErrorDao) : IServicioLog {
 
 
     /**
@@ -60,10 +62,6 @@ class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOp
         baseDatos.insertar(primerNumero,operador,segundoNumero,resultado)
     }
 
-    override fun crearTabla() {
-        baseDatos.crearTabla()
-    }
-
     override fun obtenerOperaciones(): List<Operacion> {
         return baseDatos.obtenerTodos()
     }
@@ -71,4 +69,13 @@ class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOp
     override fun realizarConsulta() {
         baseDatos.realizarConsulta()
     }
+
+    override fun insertarError(mensaje: String) {
+        errorDao.insertar(mensaje)
+    }
+
+    override fun consultarErrores() {
+        errorDao.realizarConsulta()
+    }
+
 }

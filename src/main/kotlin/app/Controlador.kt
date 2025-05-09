@@ -102,6 +102,7 @@ class Controlador(
             val msg = "Error en los argumentos: operación no válida."
             ui.mostrarError(msg)
             gestorLog.registrarEntradaLog(msg)
+            gestorLog.insertarError(msg)
         } else {
             realizarCalculo(numero1, operador, numero2)
         }
@@ -123,6 +124,7 @@ class Controlador(
                 val mensaje = e.message ?: "Se ha producido un error!"
                 ui.mostrarError(mensaje)
                 gestorLog.registrarEntradaLog(mensaje)
+                gestorLog.insertarError(mensaje)
             }
         } while (ui.preguntar())
 
