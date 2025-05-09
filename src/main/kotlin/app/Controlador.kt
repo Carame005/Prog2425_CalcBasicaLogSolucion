@@ -35,7 +35,26 @@ class Controlador(
         ui.pausar("Pulsa ENTER para iniciar la calculadora...")
         ui.limpiarPantalla()
 
-        bucleCalculosUsuario()
+        while (true){
+            println("1.Usar Calculadora")
+            println("2.Mostrar registro de operaciones")
+            println("3.Salir")
+            val opcion = ui.pedirEntero("Elija una opción: ")
+            ui.limpiarPantalla()
+            when(opcion){
+                1 -> bucleCalculosUsuario()
+                2 ->{
+                    gestorLog.realizarConsulta()
+                }
+                3 -> return
+                else -> {
+                    ui.mostrar("¡Elija una opción valida!", true)
+                    continue
+                }
+            }
+        }
+
+
     }
 
     /**

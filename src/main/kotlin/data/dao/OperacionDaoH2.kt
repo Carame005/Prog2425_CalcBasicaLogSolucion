@@ -12,12 +12,16 @@ import kotlin.use
 
 class OperacionDaoH2 : IOperacionDaoH2 {
 
+    /**
+     * Devuelve una lista de Operaciones
+     */
+
     override fun obtenerTodos(): List<Operacion> {
         val operacion = mutableListOf<Operacion>()
         try {
             UtilsBD.obtenerConexion().use { con ->
                 con?.createStatement().use { stmt ->
-                    val sql = "Select * from usuario"
+                    val sql = "Select * from operaciones"
                     stmt?.executeQuery(sql).use { rs ->
                         if (rs == null){
                             return emptyList()
@@ -41,6 +45,11 @@ class OperacionDaoH2 : IOperacionDaoH2 {
         }
         return operacion
     }
+
+    /**
+     * Función que actualiza la tabla Operaciones cuando se usa la calculadora
+     */
+
     override fun insertar(primerNumero : Double, operador: Operador, segundoNumero : Double, resultado : Double) {
         crearTabla()
         UtilsBD.obtenerConexion().use { con->
@@ -53,6 +62,39 @@ class OperacionDaoH2 : IOperacionDaoH2 {
                 stm?.executeUpdate(sql)
             }
         }
+    }
+
+    /**
+     * Función que muestra por pantalla la tabla Operaciones
+     */
+
+    override fun realizarConsulta() {
+        try{
+            UtilsBD.obtenerConexion().use { con ->
+                con?.createStatement().use { stm ->
+                    stm?.executeQuery("""
+                    Select * from operaciones
+                    """.trimIndent()).use { rs ->
+                        if (rs == null) {
+                            println("El ResultSet es nulo")
+                            return
+                        }
+                        val cols = rs.metaData.columnCount
+
+                        while (rs.next()) {
+                            val fila = (1..cols).joinToString(" | ") { rs.getString(it) }
+                            println(fila)
+                        }
+                        readln()
+                    }
+                }
+            }
+
+        }catch (e: SQLException){
+            throw IllegalArgumentException("ERROR, los valores no están en un formato válido", e)
+        }catch (e : Exception){
+            throw Exception("OCURRIO UN ERROR INSESPERADO",e)
+      }
     }
 
     override fun crearTabla() {

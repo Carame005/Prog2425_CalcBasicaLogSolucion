@@ -5,7 +5,6 @@ import es.prog2425.calclog.data.RepoLogTxt
 import es.prog2425.calclog.service.ServicioLog
 import es.prog2425.calclog.ui.Consola
 import es.prog2425.calclog.utils.GestorFichTxt
-import es.prog2425.calclog.data.bd.UtilsBD
 import es.prog2425.calclog.data.dao.OperacionDaoH2
 
 /**

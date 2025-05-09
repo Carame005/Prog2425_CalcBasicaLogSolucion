@@ -50,9 +50,6 @@ class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOp
         repositorio.ruta = ruta
         return repositorio.crearRutaLog()
     }
-    override fun obtenerTodos(): List<Operacion> {
-        return baseDatos.obtenerTodos()
-    }
 
     override fun insertar(
         primerNumero: Double,
@@ -65,5 +62,13 @@ class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOp
 
     override fun crearTabla() {
         baseDatos.crearTabla()
+    }
+
+    override fun obtenerOperaciones(): List<Operacion> {
+        return baseDatos.obtenerTodos()
+    }
+
+    override fun realizarConsulta() {
+        baseDatos.realizarConsulta()
     }
 }

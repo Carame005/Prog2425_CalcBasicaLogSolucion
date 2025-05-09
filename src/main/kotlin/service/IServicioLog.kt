@@ -10,7 +10,8 @@ interface IServicioLog {
     fun getInfoUltimoLog(): List<String>
     fun crearNuevoLog()
     fun crearRutaLog(ruta: String): Boolean
-    fun obtenerTodos() : List<Operacion>
     fun insertar(primerNumero : Double, operador: Operador, segundoNumero : Double, resultado : Double)
     fun crearTabla()
+    fun obtenerOperaciones() : List<Operacion>
+    fun realizarConsulta()
 }
