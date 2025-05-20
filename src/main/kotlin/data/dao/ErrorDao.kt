@@ -4,16 +4,21 @@ import es.prog2425.calclog.data.bd.UtilsBD
 import java.sql.SQLException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.sql.DataSource
 import kotlin.use
 
-class ErrorDao : IErrorDao {
+class ErrorDao(private val dataSource: DataSource) : IErrorDao {
 
-
+    /**
+     * Funcion que sirve para guardar un error en el historial
+     *
+     * @param mensaje El mensaje de error que se guarda en el historial
+     */
     override fun insertar(
         mensaje : String
     ) {
         crearTabla()
-        UtilsBD.obtenerConexion().use { con->
+        dataSource.connection.use { con->
             con?.createStatement().use { stm ->
                 val fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 val sql = """
@@ -25,9 +30,13 @@ class ErrorDao : IErrorDao {
         }
     }
 
+    /**
+     * Funcion simple que crea la tabla errores si no existe
+     */
+
     override fun crearTabla() {
         try{
-            UtilsBD.obtenerConexion().use { con ->
+            dataSource.connection.use  { con ->
                 con?.createStatement().use { stm ->
                     val sql = """
                     CREATE TABLE IF NOT EXISTS ERRORES (
@@ -45,9 +54,13 @@ class ErrorDao : IErrorDao {
         }
     }
 
+    /**
+     * Funcion que devuelve la tabla entera a modo de historial
+     */
+
     override fun realizarConsulta() {
         try{
-            UtilsBD.obtenerConexion().use { con ->
+            dataSource.connection.use { con ->
                 con?.createStatement().use { stm ->
                     stm?.executeQuery("""
                     Select * from errores

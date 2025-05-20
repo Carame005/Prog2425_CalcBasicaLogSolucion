@@ -14,7 +14,10 @@ import java.sql.Statement
  * Servicio que actúa como intermediario entre la lógica de aplicación y el repositorio de logs.
  * Encapsula la lógica de negocio relacionada con la gestión de registros de log.
  */
-class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOperacionDaoH2, private val errorDao: IErrorDao) : IServicioLog {
+class ServicioLog(
+    private val repositorio: IRepoLog,
+    private val baseDatos : IOperacionDaoH2,
+    private val errorDao: IErrorDao) : IServicioLog {
 
 
     /**
@@ -53,6 +56,9 @@ class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOp
         return repositorio.crearRutaLog()
     }
 
+    /**
+     * Inserta en la base de datos los numeros, el operador y el resultado
+     */
     override fun insertar(
         primerNumero: Double,
         operador: Operador,
@@ -62,18 +68,30 @@ class ServicioLog(private val repositorio: IRepoLog, private val baseDatos : IOp
         baseDatos.insertar(primerNumero,operador,segundoNumero,resultado)
     }
 
+    /**
+     * Obtiene una lista de operaciones
+     */
     override fun obtenerOperaciones(): List<Operacion> {
         return baseDatos.obtenerTodos()
     }
 
+    /**
+     * Muestra por pantalla el historial de operaciones
+     */
     override fun realizarConsulta() {
         baseDatos.realizarConsulta()
     }
 
+    /**
+     * Guarda el error en la base de datos
+     */
     override fun insertarError(mensaje: String) {
         errorDao.insertar(mensaje)
     }
 
+    /**
+     * Muestra el historial de errores
+     */
     override fun consultarErrores() {
         errorDao.realizarConsulta()
     }

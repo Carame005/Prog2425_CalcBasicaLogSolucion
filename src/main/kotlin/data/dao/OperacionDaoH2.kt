@@ -7,10 +7,11 @@ import java.sql.SQLException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import es.prog2425.calclog.data.bd.UtilsBD
+import javax.sql.DataSource
 import kotlin.use
 
 
-class OperacionDaoH2 : IOperacionDaoH2 {
+class OperacionDaoH2(private val dataSource: DataSource) : IOperacionDaoH2 {
 
     /**
      * Devuelve una lista de Operaciones
@@ -19,7 +20,7 @@ class OperacionDaoH2 : IOperacionDaoH2 {
     override fun obtenerTodos(): List<Operacion> {
         val operacion = mutableListOf<Operacion>()
         try {
-            UtilsBD.obtenerConexion().use { con ->
+            dataSource.connection.use  { con ->
                 con?.createStatement().use { stmt ->
                     val sql = "Select * from operaciones"
                     stmt?.executeQuery(sql).use { rs ->
@@ -52,7 +53,7 @@ class OperacionDaoH2 : IOperacionDaoH2 {
 
     override fun insertar(primerNumero : Double, operador: Operador, segundoNumero : Double, resultado : Double) {
         crearTabla()
-        UtilsBD.obtenerConexion().use { con->
+        dataSource.connection.use  { con->
             con?.createStatement().use { stm ->
                 val fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 val sql = """
@@ -70,7 +71,7 @@ class OperacionDaoH2 : IOperacionDaoH2 {
 
     override fun realizarConsulta() {
         try{
-            UtilsBD.obtenerConexion().use { con ->
+            dataSource.connection.use  { con ->
                 con?.createStatement().use { stm ->
                     stm?.executeQuery("""
                     Select * from operaciones
@@ -97,9 +98,13 @@ class OperacionDaoH2 : IOperacionDaoH2 {
       }
     }
 
+    /**
+     * Funcion que sirve para crear la tabla operaciones si esta no existe
+     */
+
     override fun crearTabla() {
         try{
-            UtilsBD.obtenerConexion().use { con ->
+            dataSource.connection.use  { con ->
                 con?.createStatement().use { stm ->
                     val sql = """
                     CREATE TABLE IF NOT EXISTS OPERACIONES (

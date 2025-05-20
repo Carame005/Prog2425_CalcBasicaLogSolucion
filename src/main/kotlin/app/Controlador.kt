@@ -38,7 +38,8 @@ class Controlador(
         while (true){
             println("1.Usar Calculadora")
             println("2.Mostrar registro de operaciones")
-            println("3.Salir")
+            println("3.Mostrar registro de errores")
+            println("4.Salir")
             val opcion = ui.pedirEntero("Elija una opción: ")
             ui.limpiarPantalla()
             when(opcion){
@@ -46,7 +47,10 @@ class Controlador(
                 2 ->{
                     gestorLog.realizarConsulta()
                 }
-                3 -> return
+                3 ->{
+                    gestorLog.consultarErrores()
+                }
+                4 -> return
                 else -> {
                     ui.mostrar("¡Elija una opción valida!", true)
                     continue
@@ -92,6 +96,7 @@ class Controlador(
 
     /**
      * Realiza una operación matemática a partir de los argumentos recibidos.
+     * Inserta esa operacion y el resultado en la base de datos
      */
     private fun ejecutarCalculoConArgumentos(args: Array<String>) {
         val numero1 = args[1].replace(',', '.').toDoubleOrNull()
@@ -110,6 +115,7 @@ class Controlador(
 
     /**
      * Ejecuta un bucle de cálculos interactivos con el usuario hasta que este decida salir.
+     * Registra el error en la base de datos si se da.
      */
     private fun bucleCalculosUsuario() {
         do {
@@ -133,7 +139,7 @@ class Controlador(
 
     /**
      * Ejecuta un cálculo utilizando parámetros explícitos o solicitándolos al usuario.
-     * Registra el resultado en el log.
+     * Registra el resultado en el log y en la base de datos
      */
     private fun realizarCalculo(num1: Double, operador: Operador, num2: Double) {
         val calculo = calculadora.realizarCalculo(num1, operador, num2)
