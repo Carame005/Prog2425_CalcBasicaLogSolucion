@@ -1,3 +1,5 @@
+Puedes consultar la documentación [aquí](https://carame005.github.io/Prog2425_CalcBasicaLogSolucion/)
+
 # Explicación de que se ha hecho
 
 Bueno cómo el ejercicio pedía he añadido la capacidad de gestionar los logs al proyecto de la calculadora y ahora procederé a comentar que he añadido y cómo funciona
