@@ -1,6 +1,5 @@
 package es.prog2425.calclog.data.dao
 
-import es.prog2425.calclog.data.bd.UtilsBD
 import java.sql.SQLException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

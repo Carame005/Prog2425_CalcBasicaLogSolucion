@@ -6,7 +6,6 @@ import es.prog2425.calclog.model.Operador
 import java.sql.SQLException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import es.prog2425.calclog.data.bd.UtilsBD
 import javax.sql.DataSource
 import kotlin.use
 
